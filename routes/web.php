@@ -23,3 +23,7 @@ Route::get('/ide', function () {
 Route::get('/pdf', function () {
     return view('pdf');
 });
+
+Route::get('/java', function () {
+    return view('java-ide');
+});
