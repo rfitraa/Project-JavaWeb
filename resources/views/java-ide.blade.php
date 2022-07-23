@@ -4,27 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Codeboard Online IDE</title>
+    <title>Java Online IDE</title>
     <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-    <div class="header"> Codeboard Online IDE </div>
-    <div class="control-panel">
-        Select Language:
-        &nbsp; &nbsp;
-        <select id="languages" class="languages" onchange="changeLanguage()">
-            <option value="java"> Java </option>
-            <option value="c"> C </option>
-            <option value="cpp"> C++ </option>
-            <option value="php"> PHP </option>
-            <option value="python"> Python </option>
-            <option value="node"> Node JS </option>
-        </select>
-    </div>
+    <div class="header"> Java Online IDE </div>
+
     <div class="editor" id="editor"></div>
 
     <div class="button-container">
         <button class="btn" onclick="executeCode()"> Run </button>
+        <button class="btn" type="reset" onclick="reset()">Reset</button>
     </div>
 
     <div class="output" id="output"></div>
@@ -33,6 +23,9 @@
     <script src="js/lib/ace.js"></script>
     <script src="js/lib/theme-monokai.js"></script>
     <script src="js/ide.js"></script>
+    <script src="js/lib/ext-language_tools.js"></script>
+    <script src="js/lib/ext-emmet.js"></script>
+    <script src="js/lib/ext-elastic_tabstops_lite.js"></script>
 
 </body>
 </html>

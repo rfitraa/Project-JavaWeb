@@ -1,37 +1,37 @@
 let editor;
+let defaultCode; //tempat untuk menyimpat default code dengan read file.txt
 
 window.onload = function () {
     editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
+    editor.setOptions({
+        // following options require ext-language_tools.js
+        enableBasicAutocompletion: true,
+        enableLiveAutocompletion: true,
+        enableSnippets: true,
+        // the following option requires ext-emmet.js and the emmet library
+        enableEmmet: true,
+        // the following option requires ext-elastic_tabstops_lite.js
+        useElasticTabstops: true,
+        //another
+        enableMultiselect: true,
+    });
     editor.session.setMode("ace/mode/java");
 };
 
-function changeLanguage() {
-    let language = $("#languages").val();
-
-    if (language == "c" || language == "cpp")
-        editor.session.setMode("ace/mode/c_cpp");
-    else if (language == "php") editor.session.setMode("ace/mode/php");
-    else if (language == "python") editor.session.setMode("ace/mode/python");
-    else if (language == "node") editor.session.setMode("ace/mode/javascript");
-    else if (language == "java") editor.session.setMode("ace/mode/java");
+function reset() {
+    editor = ace.edit("editor");
+    editor.setValue("");
 }
 
 function executeCode() {
-    // $.ajax({
-    //     url: "/app/compiler.php",
-
-    //     method: "POST",
-
-    //     data: {
-    //         language: $("#languages").val(),
-    //         code: editor.getSession().getValue(),
-    //     },
-
-    //     success: function (response) {
-    //         $(".output").text(response);
-    //     },
-    // });
+    async function readReadableStream(readableStream) {
+        const reader = readableStream.getReader();
+        const uint8 = (await reader.read()).value;
+        const textDecoder = new TextDecoder();
+        const resultString = textDecoder.decode(uint8);
+        return resultString;
+    }
 
     fetch("https://godbolt.org/api/compiler/java1800/compile", {
         method: "POST",
@@ -46,17 +46,8 @@ function executeCode() {
                 },
             },
         }),
-    })
-        .then(function (response) {
-            if (response.status != 200) {
-                console.log("error " + response.status);
-                return;
-            }
-            //print into
-            // console.log(response);
-            // console.log(readReadableStream(response.body));
-        })
-        .catch(function (err) {
-            console.log(err);
-        });
+    }).then(async (res) => {
+        // console.log(await readReadableStream(res.body));
+        $("#output").text(await readReadableStream(res.body));
+    });
 }
